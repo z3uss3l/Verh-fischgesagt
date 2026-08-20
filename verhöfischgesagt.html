@@ -154,21 +154,44 @@
 
         .engine-option input { accent-color: var(--gold); }
 
-        .api-config {
-            display: none;
-            grid-template-columns: 1fr auto;
-            gap: 10px;
-            align-items: end;
-            margin: -8px 0 20px;
+        .api-settings {
+            margin: 0 0 18px;
+            border: 1px solid #443c52;
+            border-radius: 6px;
+            background: rgba(0,0,0,0.14);
+            overflow: hidden;
         }
 
-        .api-config.visible { display: grid; }
+        .api-settings summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 8px 12px;
+            color: var(--muted);
+            font-size: 0.74em;
+            user-select: none;
+        }
+
+        .api-settings summary::-webkit-details-marker { display: none; }
+
+        .api-settings summary::before {
+            content: "▸";
+            display: inline-block;
+            width: 1.2em;
+            color: var(--gold);
+        }
+
+        .api-settings[open] summary::before { content: "▾"; }
+
+        .api-info {
+            padding: 0 12px 12px;
+            color: var(--muted);
+            font-size: 0.78em;
+            line-height: 1.45;
+        }
 
         .api-status {
-            min-height: 18px;
+            margin-top: 8px;
             font-size: 0.82em;
-            color: var(--muted);
-            padding: 0 2px;
         }
 
         .api-status.ok { color: var(--ok); }
@@ -222,9 +245,21 @@
 
         @media (max-width: 680px) {
             .controls { grid-template-columns: 1fr; }
-            button { width: 100%; }
-            .api-config { grid-template-columns: 1fr; }
-            .container { padding: 20px; }
+            .engine-row { align-items: flex-start; }
+            button { width: 100%; min-width: 0; }
+            .container {
+                width: 100%;
+                max-width: 100%;
+                padding: 18px;
+            }
+            textarea { min-height: 130px; }
+        }
+
+        @media (max-width: 420px) {
+            body { padding: 8px; }
+            .container { padding: 14px; }
+            h1 { font-size: 1.35rem; letter-spacing: 1px; }
+            .engine-option { font-size: 0.84em; }
         }
     </style>
 </head>
@@ -248,7 +283,7 @@
 
         <label class="engine-option">
             <input type="radio" name="engine" value="semantic">
-            Semantische Engine v2
+            Semantische Engine v2 (offline)
         </label>
 
         <label class="engine-option">
@@ -257,13 +292,18 @@
         </label>
     </div>
 
+    <details class="api-settings">
+        <summary>Technische Einstellungen / API</summary>
+        <div class="api-info">
+            <strong>Offline-Modus aktiv.</strong><br>
+            Die Semantic Engine v2 ist direkt in diese HTML-Datei eingebettet und
+            benötigt weder API, Node.js noch einen Webserver. Dieser Bereich ist
+            ausschließlich für spätere API-Anbindungen vorgesehen.
+            <div id="apiStatus" class="api-status ok">
+                Semantic Engine v2: lokal eingebettet und offline verfügbar.
+            </div>
         </div>
-        <button type="button" onclick="checkSemanticApi()">API prüfen</button>
-    </div>
-
-    <div id="apiConfig" class="api-config">
-        <div class="api-status ok">Semantic Engine v2 ist eingebettet und läuft direkt im Browser – auch über <code>file://</code>, ohne Webserver.</div>
-    </div>
+    </details>
 
     <div class="controls">
         <div class="control-block">
@@ -819,10 +859,9 @@ async function transmuteSemantic(input, style, mode) {
     return { output: data.transmuted || "", analysis: data.analysis || null, raw: data };
 }
 
-async function updateEngineVisibility() {
-    const semantic = getSelectedEngine() === "semantic";
-    document.getElementById("apiConfig").classList.toggle("visible", semantic);
-    if (semantic) setApiStatus("Semantic Engine v2 eingebettet: vollständig offline verfügbar.", "ok");
+function updateEngineVisibility() {
+    // Both engines are embedded and run entirely client-side.
+    // Keep technical/API settings collapsed and out of the normal workflow.
 }
 
 async function transmuteText() {
@@ -845,7 +884,7 @@ async function transmuteText() {
     }
 
     outputBox.innerText = "Die semantische Hofkanzlei verarbeitet Eure Kundgabe …";
-    setApiStatus("Verwende Semantic Engine v2 …");
+    setApiStatus("Verwende eingebettete Semantic Engine v2 …");
 
     try {
         const result = await transmuteSemantic(input, style, semanticMode);
