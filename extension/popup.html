@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Verh-fischgesagt</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main>
+    <h1>Verh-fischgesagt</h1>
+    <p class="sub">Lokale Semantic Translation Engine</p>
+
+    <label for="style">Stilprofil</label>
+    <select id="style">
+      <option value="barock">Höfisches Barock</option>
+      <option value="kanzlei">Kaiserlicher Kanzleistil</option>
+      <option value="poetisch">Romantisch-Poetisch</option>
+    </select>
+
+    <div class="actions">
+      <button id="selection">Markierte Auswahl</button>
+      <button id="page">Ganze Seite</button>
+      <button id="restore">Original wiederherstellen</button>
+    </div>
+
+    <div id="status" role="status"></div>
+
+    <button id="options" class="secondary">Einstellungen / Translation Memory</button>
+  </main>
+  <script src="engine/semantic-engine.js"></script>
+  <script src="engine/translation-formats.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
