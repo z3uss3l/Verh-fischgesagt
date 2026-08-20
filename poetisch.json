@@ -1,0 +1,8 @@
+{
+  "id": "poetisch",
+  "name": "Romantisch-Poetisch",
+  "language": "de-DE",
+  "targetRegister": "de-HOF-POETISCH",
+  "description": "Poetisches, bildhaftes Register.",
+  "engine": "semantic-v2"
+}

@@ -1,0 +1,8 @@
+{
+  "id": "barock",
+  "name": "Höfisches Barock",
+  "language": "de-DE",
+  "targetRegister": "de-HOF-BAROCK",
+  "description": "Höfisch-formeller, barocker Registertransformator.",
+  "engine": "semantic-v2"
+}

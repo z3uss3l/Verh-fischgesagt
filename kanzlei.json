@@ -1,0 +1,8 @@
+{
+  "id": "kanzlei",
+  "name": "Kaiserlicher Kanzleistil",
+  "language": "de-DE",
+  "targetRegister": "de-HOF-KANZLEI",
+  "description": "Amtlich-formeller Kanzleistil.",
+  "engine": "semantic-v2"
+}
