@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/z3uss3l/Verh-fischgesagt/blob/main/formats/vft.schema.json",
+  "title": "VFT – Verh-Fisch Translation",
+  "type": "object",
+  "required": ["format", "version"],
+  "properties": {
+    "format": { "const": "VFT" },
+    "version": { "const": 1 },
+    "sourceLanguage": { "type": "string", "description": "BCP 47 language tag" },
+    "targetLanguage": { "type": "string", "description": "BCP 47 language/style tag" },
+    "translationMemory": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source", "target"],
+        "properties": {
+          "sourceLang": { "type": "string" },
+          "targetLang": { "type": "string" },
+          "source": { "type": "string" },
+          "target": { "type": "string" },
+          "context": { "type": "string" }
+        }
+      }
+    },
+    "terminology": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source", "target"],
+        "properties": {
+          "source": { "type": "string" },
+          "target": { "type": "string" },
+          "domain": { "type": "string" }
+        }
+      }
+    }
+  }
+}
