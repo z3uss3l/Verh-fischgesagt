@@ -10,7 +10,7 @@ Transform your everyday German into courtly, baroque, or poetic formal speech!
   - 🌹 **Romantisch-Poetisch** - Romantic and poetic language
 
 - **Multiple Interfaces:**
-  - 🌐 Web Interface (`verhöfischgesagt.html`) - [Try it live!](https://htmlpreview.github.io/?https://github.com/z3uss3l/Verh-fischgesagt/blob/new.html)
+  - 🌐 Web Interface (`verhöfischgesagt.html`) - [Try it live!](https://htmlpreview.github.io/?https://github.com/z3uss3l/Verh-fischgesagt/blob/verhöfischgesagt.html)
   - 🔌 REST API with Express.js
 
 - **Easy to Use:**
