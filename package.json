@@ -1,26 +1,15 @@
 {
-  "name": "verhoefisch-api",
-  "version": "1.0.0",
-  "description": "API for transforming text into formal German speech styles (Verhoefisch)",
-  "main": "api/server.js",
+  "name": "verh-fischgesagt",
+  "version": "3.0.0",
+  "private": true,
+  "description": "Lokale semantische und grammatikalische Transformationsengine mit Browser Extension und Übersetzungsformat-Interoperabilität.",
   "scripts": {
-    "start": "node api/server.js",
-    "dev": "nodemon api/server.js"
+    "test": "node test/semantic-engine.test.js",
+    "api": "node api/server.js",
+    "test:extension": "node test/extension-smoke.js"
   },
-  "keywords": [
-    "api",
-    "german",
-    "formal",
-    "barock",
-    "text-transformation"
-  ],
-  "author": "z3uss3l",
-  "license": "MIT",
   "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.1"
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
   }
 }
