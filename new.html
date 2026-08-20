@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hofstil Transmutator – Verhöfisch Gesagt</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f0b14;
+            --bg-card: rgba(28, 22, 34, 0.92);
+            --gold: #d4af37;
+            --gold-light: #f1c40f;
+            --gold-glow: rgba(212, 175, 55, 0.35);
+            --text: #eae3f0;
+            --text-muted: #b8aec9;
+            --border: #4a3f5e;
+            --input-bg: rgba(0, 0, 0, 0.45);
+            --font-heading: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+            --font-body: 'EB Garamond', Georgia, 'Times New Roman', serif;
+            --radius: 14px;
+            --radius-sm: 8px;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: radial-gradient(ellipse at top, #1a1322 0%, var(--bg-dark) 70%);
+            color: var(--text);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4af37' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            background: var(--bg-card);
+            border: 2px solid var(--gold);
+            border-radius: var(--radius);
+            padding: clamp(20px, 4vw, 40px);
+            width: 100%;
+            max-width: 760px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7), 0 0 0 1px rgba(212,175,55,0.2) inset, 0 0 30px var(--gold-glow);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: box-shadow var(--transition);
+        }
+
+        .container:hover {
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8), 0 0 0 1px rgba(212,175,55,0.35) inset, 0 0 45px rgba(212,175,55,0.25);
+        }
+
+        .container::before, .container::after {
+            content: "❦";
+            position: absolute;
+            color: var(--gold);
+            font-size: 1.6rem;
+            opacity: 0.6;
+            line-height: 1;
+            pointer-events: none;
+        }
+        .container::before { top: -18px; left: -10px; }
+        .container::after { bottom: -18px; right: -10px; }
+
+        header { text-align: center; margin-bottom: 30px; }
+
+        h1 {
+            font-family: var(--font-heading);
+            color: var(--gold);
+            font-weight: 600;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            letter-spacing: 3px;
+            margin: 0 0 10px;
+            text-shadow: 0 0 12px rgba(212,175,55,0.4);
+        }
+
+        .subtitle {
+            font-style: italic;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            border-bottom: 1px solid var(--gold);
+            padding-bottom: 12px;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+
+        .input-group { margin-bottom: 24px; }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--gold);
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 130px;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            padding: 14px 16px;
+            font-family: var(--font-body);
+            font-size: 1.05rem;
+            line-height: 1.5;
+            resize: vertical;
+            transition: border-color var(--transition), box-shadow var(--transition);
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212,175,55,0.2);
+        }
+
+        textarea::placeholder { color: #6b5e7a; font-style: italic; }
+
+        .controls {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        select {
+            flex: 1 1 auto;
+            min-width: 160px;
+            background: var(--bg-card);
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 12px 38px 12px 18px;
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23d4af37' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            transition: all var(--transition);
+        }
+
+        select:hover, select:focus {
+            border-color: var(--gold-light);
+            box-shadow: 0 0 12px var(--gold-glow);
+            outline: none;
+        }
+
+        .btn {
+            background: var(--gold);
+            color: var(--bg-dark);
+            border: none;
+            padding: 12px 24px;
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            flex: 0 0 auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background: var(--gold-light);
+            box-shadow: 0 6px 18px rgba(212,175,55,0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn:active { transform: translateY(0); box-shadow: 0 2px 6px rgba(212,175,55,0.4); }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            box-shadow: none;
+        }
+        .btn-secondary:hover {
+            background: rgba(212,175,55,0.1);
+            box-shadow: 0 0 15px var(--gold-glow);
+            transform: none;
+        }
+        .btn-copy { padding: 10px 18px; font-size: 0.95rem; flex: 0 0 auto; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .example-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+
+        .chip {
+            background: rgba(212,175,55,0.08);
+            border: 1px solid rgba(212,175,55,0.4);
+            color: var(--gold);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: var(--font-body);
+            font-style: italic;
+            user-select: none;
+        }
+
+        .chip:hover {
+            background: rgba(212,175,55,0.2);
+            border-color: var(--gold);
+            box-shadow: 0 0 10px var(--gold-glow);
+        }
+
+        .output-box {
+            background: rgba(0, 0, 0, 0.6);
+            border-left: 4px solid var(--gold);
+            padding: 18px 20px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            min-height: 100px;
+            white-space: pre-wrap;
+            font-style: italic;
+            line-height: 1.6;
+            font-size: 1.05rem;
+            margin-bottom: 16px;
+            transition: border-color var(--transition);
+        }
+
+        .output-box:focus { outline: none; border-left-color: var(--gold-light); }
+
+        .output-actions { display: flex; gap: 12px; justify-content: flex-end; }
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: var(--gold);
+            color: var(--bg-dark);
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-family: var(--font-heading);
+            letter-spacing: 1px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            opacity: 0;
+            transition: all 0.4s ease;
+            pointer-events: none;
+            z-index: 100;
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        @media (max-width: 600px) {
+            .controls { flex-direction: column; }
+            .btn { width: 100%; }
+            .output-actions { flex-direction: column; }
+            .container::before, .container::after { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Hofstil Transmutator</h1>
+            <div class="subtitle">Verwandelt gewöhnliche Rede in höfische Kunst</div>
+        </header>
+
+        <main>
+            <div class="input-group">
+                <label for="inputText">Euer Anliegen in gewöhnlicher Rede</label>
+                <textarea id="inputText" placeholder="Geben Sie hier Ihren Text ein, z.B.: Hallo, wie geht es dir? Ich habe eine Frage."></textarea>
+            </div>
+
+            <div class="example-chips" aria-label="Beispieltexte">
+                <span class="chip" data-example="Hallo, wie geht es dir? Ich habe eine Frage zu Geld.">Begrüßung & Frage</span>
+                <span class="chip" data-example="Danke für deine schnelle Antwort. Wir sehen uns heute Abend.">Dank & Abschied</span>
+                <span class="chip" data-example="Ich muss arbeiten und habe ein Problem mit dem Projekt.">Arbeit & Probleme</span>
+            </div>
+
+            <div class="controls">
+                <select id="styleSelect" aria-label="Stilrichtung wählen">
+                    <option value="barock">Höfisches Barock</option>
+                    <option value="kanzlei">Kaiserlicher Kanzleistil</option>
+                    <option value="poetisch">Romantisch-Poetisch</option>
+                </select>
+                <button id="transmuteBtn" class="btn" type="button">✦ Verhöfischen</button>
+            </div>
+
+            <div class="input-group">
+                <label for="outputText">Verhöfischte Kundgabe</label>
+                <div id="outputText" class="output-box" tabindex="0" aria-live="polite">Warten auf Eure Einbegehrung…</div>
+                <div class="output-actions">
+                    <button id="copyBtn" class="btn btn-copy btn-secondary" type="button" disabled>📋 Kopieren</button>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            Möge Eure Rede stets von Anmut geziert sein.
+        </footer>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ---------- Wörterbuch ----------
+            const dictionary = {
+                barock: {
+                    prefix: "Seid gegrüßt, edler Herr / werte Dame!\n\nEs gereicht Uns zur außerordentlichen Ergötzlichkeit, Euch kundzutun:\n",
+                    suffix: "\n\nIn tiefster Ergebenheit verbleibend,",
+                    phrases: [
+                        { pattern: /\bhallo\b|\bhi\b|\bguten tag\b|\bmoin\b|\bservus\b/gi, replacements: ["Seyed gegrüßet", "Seid mir willkommen", "Ein wohlfeiles Willkommen Euch"] },
+                        { pattern: /\bwie geht es dir\b|\bwie gehts\b|\bwie geht's\b/gi, replacements: ["wie stehet es um Euer wohlgeschätztes Befinden", "wie befindet sich Euer edles Selbst"] },
+                        { pattern: /\bich habe eine frage\b/gi, replacements: ["ein dringlich Begehren drängt an Unser Ohr", "eine Frage brennt auf Unseren Lippen"] },
+                        { pattern: /\bauf wiedersehen\b|\btschüss\b|\bciao\b|\bade\b/gi, replacements: ["Gott befehle Euch in seine gnädige Obhut", "möget Ihr unter dem Schutze des Himmels wandeln"] },
+                        { pattern: /\bguten morgen\b/gi, replacements: ["einen gesegneten Morgen wünsche ich Euch", "der Morgen grüßt Euch mit goldenem Schein"] },
+                        { pattern: /\bgute nacht\b/gi, replacements: ["eine geruhsame Nacht sei Euch beschieden", "mögen die Sterne Euren Schlaf bewachen"] }
+                    ],
+                    words: [
+                        { pattern: /\bdanke\b|\bdankeschön\b/gi, replacements: ["Wir erweisen Euch Unseren verbindlichsten Dank", "habt Dank, edle Seele"] },
+                        { pattern: /\bja\b/gi, replacements: ["Wohlan, so sei es", "Fürwahr, dem ist so"] },
+                        { pattern: /\bnein\b/gi, replacements: ["Behüte uns Gott vor solchem Tuen", "nimmermehr, edler Herr"] },
+                        { pattern: /\bgeld\b|\bmoneten\b|\bkohle\b/gi, replacements: ["Güter und Dukaten", "wohlgefüllte Schatullen"] },
+                        { pattern: /\barbeiten\b|\barbeite\b|\bjob\b/gi, replacements: ["dem schaffenden Tagewerk nachgehen", "sich der Arbeit hingeben"] },
+                        { pattern: /\bheute\b/gi, replacements: ["am heutigen Tage des Herrn", "an diesem wohlgezählten Tage"] },
+                        { pattern: /\bschnell\b|\bsofort\b|\bgleich\b/gi, replacements: ["ohne Verzug und mit größter Eile", "unverzüglich und mit Eifer"] },
+                        { pattern: /\bproblem\b|\bschwierigkeit\b/gi, replacements: ["Mißhelligkeit", "widrige Verstrickung"] },
+                        { pattern: /\bgut\b|\bsuper\b|\btoll\b/gi, replacements: ["vortrefflich", "außerordentlich erfreulich"] },
+                        { pattern: /\bschlecht\b|\bmiserabel\b/gi, replacements: ["übel", "von geringer Güte"] },
+                        { pattern: /\bmorgen\b/gi, replacements: ["am morgigen Tage", "wenn der Hahn erneut kräht"] },
+                        { pattern: /\bgestern\b/gi, replacements: ["am gestrigen Tage", "da die Sonne jüngst unterging"] },
+                        { pattern: /\bessen\b|\bmahlzeit\b/gi, replacements: ["ein königliches Mahl einnehmen", "sich an der Tafel gütlich tun"] },
+                        { pattern: /\btrinken\b/gi, replacements: ["den Durst mit edlem Weine stillen", "einen Schluck aus dem Kelche nehmen"] },
+                        { pattern: /\bhaus\b|\bwohnung\b/gi, replacements: ["ehrwürdige Behausung", "das eigene Gemach"] },
+                        { pattern: /\bcomputer\b|\bpc\b|\blaptop\b/gi, replacements: ["das kunstvolle Rechenwerk", "elektronische Schreibtafel"] }
+                    ]
+                },
+                kanzlei: {
+                    prefix: "Kund und zu wissen sei hiermit jedermann:\n\nIn Sachen der nachfolgenden Angelegenheit wird ordnungsgemäß vermerkt:\n",
+                    suffix: "\n\nSignatum und siegelbewährt unter kaiserlicher Verordnung.",
+                    phrases: [
+                        { pattern: /\bhallo\b|\bguten tag\b|\bhi\b/gi, replacements: ["Zu wissen sei", "Hiermit wird kundgetan"] },
+                        { pattern: /\bfrage\b/gi, replacements: ["eingereichter Petition", "demütiges Gesuch"] },
+                        { pattern: /\bdanke\b|\bdankeschön\b/gi, replacements: ["in getreuer Anerkenntnis", "mit untertänigem Dank"] },
+                        { pattern: /\bgeld\b|\bmoneten\b/gi, replacements: ["Münzbestand", "finanzielle Mittel"] },
+                        { pattern: /\bschnell\b|\bsofort\b/gi, replacements: ["unverzüglich", "ohne schuldhaftes Zögern"] },
+                        { pattern: /\bproblem\b|\bschwierigkeit\b/gi, replacements: ["unvorhergesehene Hemmnis", "amtlich festgestellte Komplikation"] },
+                        { pattern: /\bich\b/gi, replacements: ["der Unterzeichnete", "die gefertigte Person"] },
+                        { pattern: /\bdu\b/gi, replacements: ["Euer Gnaden", "die adressierte Partei"] },
+                        { pattern: /\bwir\b/gi, replacements: ["die unterzeichnende Behörde", "das zuständige Amt"] }
+                    ],
+                    words: [
+                        { pattern: /\bja\b/gi, replacements: ["Dem Antrage wird stattgegeben", "Es wird bewilligt"] },
+                        { pattern: /\bnein\b/gi, replacements: ["Der Antrag wird abschlägig beschieden", "Es ergeht ablehnender Bescheid"] },
+                        { pattern: /\bheute\b/gi, replacements: ["am heutigen Tage", "dato"] },
+                        { pattern: /\bmorgen\b/gi, replacements: ["morgenwährend", "am Folgetage"] },
+                        { pattern: /\bgestern\b/gi, replacements: ["rückwirkend", "am gestrigen Tage"] },
+                        { pattern: /\barbeiten\b|\barbeite\b/gi, replacements: ["dienstlicher Obliegenheit nachgehen", "amtliche Verrichtung ausüben"] },
+                        { pattern: /\bessen\b|\bmahlzeit\b/gi, replacements: ["Nahrungsaufnahme gemäß Verordnung", "die Verköstigung"] },
+                        { pattern: /\btrinken\b/gi, replacements: ["Flüssigkeitszufuhr", "den Durst stillen"] },
+                        { pattern: /\bhaus\b|\bwohnung\b/gi, replacements: ["Wohnsitz", "Domizil"] },
+                        { pattern: /\bcomputer\b|\bpc\b/gi, replacements: ["Datenverarbeitungsanlage", "elektronisches Gerät"] }
+                    ]
+                },
+                poetisch: {
+                    prefix: "Wie ein Hauch von Gold verströmt diese Kunde:\n\n",
+                    suffix: "\n\nSo verweht der Ruf durch den Garten der Zeit.",
+                    phrases: [
+                        { pattern: /\bhallo\b|\bhi\b/gi, replacements: ["Sei uns willkommen wie der Lenz", "Ein Blütengruß zu Deiner Ankunft"] },
+                        { pattern: /\bdanke\b|\bdankeschön\b/gi, replacements: ["Mein Herz neigt sich in Dankbarkeit", "Ein Lied der Dankbarkeit erklingt"] },
+                        { pattern: /\bgute nacht\b/gi, replacements: ["Die samtene Schattenstunde hüllt Dich ein", "Der Mond küsst Deine Lider"] },
+                        { pattern: /\bguten morgen\b/gi, replacements: ["Das goldene Tagesgestirn begrüßt Dich", "Ein neuer Morgen malt den Himmel"] },
+                        { pattern: /\bich liebe dich\b/gi, replacements: ["Meine Seele ist verwoben mit der Deinen", "Ein ewiger Quell der Zuneigung entspringt"] }
+                    ],
+                    words: [
+                        { pattern: /\bnacht\b/gi, replacements: ["samtene Schattenstunde", "dunkles Samtgewand"] },
+                        { pattern: /\bsonne\b/gi, replacements: ["das goldene Tagesgestirn", "der leuchtende Himmelswagen"] },
+                        { pattern: /\bmorgen\b/gi, replacements: ["der junge Tag", "wenn der Tau die Wiesen küsst"] },
+                        { pattern: /\bgestern\b/gi, replacements: ["vergangene Stunden", "wo die Erinnerung weilt"] },
+                        { pattern: /\bherz\b/gi, replacements: ["Pochen der Seele", "innerstes Fühlen"] },
+                        { pattern: /\bliebe\b/gi, replacements: ["zarte Neigung", "unergründliche Zuneigung"] },
+                        { pattern: /\bträne\b/gi, replacements: ["Perle des Kummers", "flüssiges Leid"] },
+                        { pattern: /\bblume\b|\bblüten\b/gi, replacements: ["Farben des Gartens", "zarte Blütenpracht"] },
+                        { pattern: /\bwind\b/gi, replacements: ["unsichtbarer Bote", "Flüstern der Lüfte"] },
+                        { pattern: /\bmeer\b|\bozean\b/gi, replacements: ["endlose Wasserweite", "spiegelnde Unendlichkeit"] }
+                    ]
+                }
+            };
+
+            // Pronomen-Ersetzungen für Barock und Kanzlei
+            const pronounReplacements = [
+                { pattern: /\bdich\b/gi, replacement: "Euch" },
+                { pattern: /\bdir\b/gi, replacement: "Euch" },
+                { pattern: /\bdu\b/gi, replacement: "Ihr" },
+                { pattern: /\bdein\b/gi, replacement: "Euer" },
+                { pattern: /\bdeine\b/gi, replacement: "Eure" },
+                { pattern: /\bdeinen\b/gi, replacement: "Euren" },
+                { pattern: /\bdeinem\b/gi, replacement: "Eurem" },
+                { pattern: /\bdeiner\b/gi, replacement: "Eurer" },
+                { pattern: /\bdeines\b/gi, replacement: "Eures" },
+                { pattern: /\bich\b/gi, replacement: "Unsere Wenigkeit" },
+                { pattern: /\bmich\b/gi, replacement: "Uns" },
+                { pattern: /\bmir\b/gi, replacement: "Uns" },
+                { pattern: /\bmein\b/gi, replacement: "Unser" },
+                { pattern: /\bmeine\b/gi, replacement: "Unsere" }
+            ];
+
+            // DOM-Elemente
+            const inputText = document.getElementById('inputText');
+            const styleSelect = document.getElementById('styleSelect');
+            const outputText = document.getElementById('outputText');
+            const transmuteBtn = document.getElementById('transmuteBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            const toast = document.getElementById('toast');
+            const exampleChips = document.querySelectorAll('.chip');
+
+            // Hilfsfunktionen
+            function showToast(message, duration = 2000) {
+                toast.textContent = message;
+                toast.classList.add('show');
+                clearTimeout(toast._timeout);
+                toast._timeout = setTimeout(() => toast.classList.remove('show'), duration);
+            }
+
+            function getRandomItem(arr) {
+                return arr[Math.floor(Math.random() * arr.length)];
+            }
+
+            function safeReplace(text, pattern, replacement) {
+                try {
+                    return text.replace(pattern, replacement);
+                } catch (e) {
+                    console.warn('Ersetzungsfehler:', e);
+                    return text;
+                }
+            }
+
+            function applyReplacements(text, replacements) {
+                let result = text;
+                replacements.forEach(item => {
+                    const replacement = Array.isArray(item.replacements) 
+                        ? getRandomItem(item.replacements) 
+                        : item.replacement || item.replacements;
+                    result = safeReplace(result, item.pattern, replacement);
+                });
+                return result;
+            }
+
+            function transmuteText() {
+                const rawInput = inputText.value.trim();
+                if (!rawInput) {
+                    outputText.textContent = "So sprecht doch, damit Wir Euch vernehmen können!";
+                    copyBtn.disabled = true;
+                    return;
+                }
+
+                const styleKey = styleSelect.value;
+                const config = dictionary[styleKey];
+                if (!config) {
+                    outputText.textContent = "Eine unbekannte Stilrichtung wurde gewählt.";
+                    copyBtn.disabled = true;
+                    return;
+                }
+
+                let result = rawInput;
+
+                // Phrasen ersetzen
+                if (config.phrases && Array.isArray(config.phrases)) {
+                    result = applyReplacements(result, config.phrases);
+                }
+                // Einzelwörter ersetzen
+                if (config.words && Array.isArray(config.words)) {
+                    result = applyReplacements(result, config.words);
+                }
+                // Pronomen-Ersetzungen für bestimmte Stile
+                if (styleKey === 'barock' || styleKey === 'kanzlei') {
+                    result = applyReplacements(result, pronounReplacements);
+                }
+
+                const finalText = config.prefix + result + config.suffix;
+                outputText.textContent = finalText;
+                copyBtn.disabled = false;
+
+                try {
+                    localStorage.setItem('hofstil_style', styleKey);
+                } catch (e) { /* ignore */ }
+            }
+
+            function copyOutput() {
+                const text = outputText.textContent;
+                if (!text || copyBtn.disabled) return;
+
+                function fallbackCopy() {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    textarea.style.position = 'fixed';
+                    textarea.style.opacity = '0';
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    try {
+                        document.execCommand('copy');
+                        showToast('In die Zwischenablage kopiert!');
+                    } catch (e) {
+                        showToast('Kopieren fehlgeschlagen. Bitte manuell markieren.');
+                    }
+                    document.body.removeChild(textarea);
+                }
+
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text)
+                        .then(() => showToast('In die Zwischenablage kopiert!'))
+                        .catch(fallbackCopy);
+                } else {
+                    fallbackCopy();
+                }
+            }
+
+            function insertExample(text) {
+                inputText.value = text;
+                inputText.focus();
+            }
+
+            function loadSavedStyle() {
+                try {
+                    const saved = localStorage.getItem('hofstil_style');
+                    if (saved && dictionary[saved]) {
+                        styleSelect.value = saved;
+                    }
+                } catch (e) { /* ignore */ }
+            }
+
+            // Event Listener
+            transmuteBtn.addEventListener('click', transmuteText);
+            copyBtn.addEventListener('click', copyOutput);
+
+            inputText.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                    e.preventDefault();
+                    transmuteText();
+                }
+            });
+
+            exampleChips.forEach(chip => {
+                chip.addEventListener('click', () => {
+                    const example = chip.getAttribute('data-example');
+                    if (example) insertExample(example);
+                });
+            });
+
+            // Initialisierung
+            copyBtn.disabled = true;
+            loadSavedStyle();
+            inputText.focus();
+
+            // Fehlerdiagnose in Konsole (optional)
+            console.log('Hofstil Transmutator bereit.');
+        })();
+    </script>
+</body>
+</html>
