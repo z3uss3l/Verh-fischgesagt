@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Verh-fischgesagt – Semantic Transformer",
+  "version": "3.0.0",
+  "description": "Lokale semantische und grammatikalische Texttransformation direkt im Browser.",
+  "minimum_chrome_version": "96",
+  "permissions": ["contextMenus", "storage", "activeTab"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Verh-fischgesagt",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["engine/semantic-engine.js", "engine/translation-formats.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "options_page": "options.html"
+}
