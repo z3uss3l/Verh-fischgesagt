@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -12,7 +11,13 @@
             --gold: #d4af37;
             --text: #e0d8f0;
             --accent: #8a2be2;
+            --muted: #9c95a8;
+            --ok: #77c893;
+            --warn: #e0a95f;
+            --error: #d97777;
         }
+
+        * { box-sizing: border-box; }
 
         body {
             background-color: var(--bg-color);
@@ -24,7 +29,6 @@
             min-height: 100vh;
             margin: 0;
             padding: 20px;
-            box-sizing: border-box;
         }
 
         .container {
@@ -33,7 +37,7 @@
             border-radius: 12px;
             padding: 30px;
             width: 100%;
-            max-width: 700px;
+            max-width: 820px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
@@ -47,9 +51,7 @@
             padding-bottom: 15px;
         }
 
-        .input-group {
-            margin-bottom: 20px;
-        }
+        .input-group { margin-bottom: 20px; }
 
         label {
             display: block;
@@ -61,7 +63,7 @@
 
         textarea {
             width: 100%;
-            height: 120px;
+            height: 150px;
             background-color: rgba(0, 0, 0, 0.4);
             border: 1px solid #443c52;
             border-radius: 6px;
@@ -70,7 +72,6 @@
             font-size: 1em;
             font-family: inherit;
             resize: vertical;
-            box-sizing: border-box;
         }
 
         textarea:focus {
@@ -79,28 +80,43 @@
         }
 
         .controls {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 12px;
+            margin-bottom: 12px;
+            align-items: end;
         }
 
-        select, button {
+        .control-block { min-width: 0; }
+
+        .control-block label {
+            font-size: 0.72em;
+            margin-bottom: 5px;
+        }
+
+        select, button, input[type="url"] {
+            width: 100%;
             background-color: var(--card-bg);
             color: var(--gold);
             border: 1px solid var(--gold);
-            padding: 10px 18px;
+            padding: 10px 14px;
             font-family: inherit;
             font-size: 0.95em;
             border-radius: 6px;
             cursor: pointer;
-            transition: all 0.2s ease;
+        }
+
+        input[type="url"] {
+            color: var(--text);
+            cursor: text;
         }
 
         button {
+            width: auto;
+            min-width: 155px;
             background-color: var(--gold);
             color: var(--bg-color);
             font-weight: bold;
-            flex-grow: 1;
         }
 
         button:hover {
@@ -108,15 +124,107 @@
             box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
         }
 
+        .engine-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            padding: 12px 14px;
+            border: 1px solid #443c52;
+            border-radius: 6px;
+            background: rgba(0,0,0,0.18);
+        }
+
+        .engine-label {
+            color: var(--gold);
+            font-size: 0.86em;
+            text-transform: uppercase;
+            margin-right: 4px;
+        }
+
+        .engine-option {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 0.92em;
+        }
+
+        .engine-option input { accent-color: var(--gold); }
+
+        .api-config {
+            display: none;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+            align-items: end;
+            margin: -8px 0 20px;
+        }
+
+        .api-config.visible { display: grid; }
+
+        .api-status {
+            min-height: 18px;
+            font-size: 0.82em;
+            color: var(--muted);
+            padding: 0 2px;
+        }
+
+        .api-status.ok { color: var(--ok); }
+        .api-status.warn { color: var(--warn); }
+        .api-status.error { color: var(--error); }
+
         .output-box {
             background-color: rgba(0, 0, 0, 0.6);
             border-left: 4px solid var(--gold);
             padding: 15px;
             border-radius: 0 6px 6px 0;
-            min-height: 80px;
+            min-height: 100px;
             white-space: pre-wrap;
             font-style: italic;
             line-height: 1.5;
+        }
+
+        .analysis-box {
+            display: none;
+            margin-top: 12px;
+            background: rgba(0,0,0,0.35);
+            border: 1px solid #443c52;
+            border-radius: 6px;
+            padding: 12px;
+        }
+
+        .analysis-box.visible { display: block; }
+
+        .analysis-box summary {
+            cursor: pointer;
+            color: var(--gold);
+            font-size: 0.88em;
+        }
+
+        .analysis-box pre {
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            color: #cfc7dc;
+            font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+            font-size: 0.78em;
+            line-height: 1.45;
+            margin: 12px 0 0;
+        }
+
+        .hint {
+            color: var(--muted);
+            font-size: 0.78em;
+            line-height: 1.45;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 680px) {
+            .controls { grid-template-columns: 1fr; }
+            button { width: 100%; }
+            .api-config { grid-template-columns: 1fr; }
+            .container { padding: 20px; }
         }
     </style>
 </head>
@@ -124,26 +232,489 @@
 
 <div class="container">
     <h1>Hofstil Transmutator</h1>
-    
+
     <div class="input-group">
         <label for="inputText">Ihr Anliegen in gewöhnlicher Rede:</label>
         <textarea id="inputText" placeholder="Geben Sie hier Ihren Text ein, z.B.: Hallo, wie geht es dir? Ich habe eine Frage."></textarea>
     </div>
 
+    <div class="engine-row">
+        <span class="engine-label">Engine:</span>
+
+        <label class="engine-option">
+            <input type="radio" name="engine" value="legacy" checked>
+            Klassisch / offline
+        </label>
+
+        <label class="engine-option">
+            <input type="radio" name="engine" value="semantic">
+            Semantische Engine v2
+        </label>
+
+        <label class="engine-option">
+            <input type="checkbox" id="showAnalysis">
+            Analyse anzeigen
+        </label>
+    </div>
+
+        </div>
+        <button type="button" onclick="checkSemanticApi()">API prüfen</button>
+    </div>
+
+    <div id="apiConfig" class="api-config">
+        <div class="api-status ok">Semantic Engine v2 ist eingebettet und läuft direkt im Browser – auch über <code>file://</code>, ohne Webserver.</div>
+    </div>
+
     <div class="controls">
-        <select id="styleSelect">
-            <option value="barock">Höfisches Barock</option>
-            <option value="kanzlei">Kaiserlicher Kanzleistil</option>
-            <option value="poetisch">Romantisch-Poetisch</option>
-        </select>
-        <button onclick="transmuteText()">Verhöfischen</button>
+        <div class="control-block">
+            <label for="styleSelect">Stil</label>
+            <select id="styleSelect">
+                <option value="barock">Höfisches Barock</option>
+                <option value="kanzlei">Kaiserlicher Kanzleistil</option>
+                <option value="poetisch">Romantisch-Poetisch</option>
+            </select>
+        </div>
+
+        <div class="control-block">
+            <label for="semanticMode">Semantik-Modus</label>
+            <select id="semanticMode">
+                <option value="hybrid">Hybrid – bestehende Regeln + Semantik</option>
+                <option value="semantic">Semantik priorisieren</option>
+                <option value="analysis">Nur Analyse</option>
+            </select>
+        </div>
+
+        <button type="button" onclick="transmuteText()">Verhöfischen</button>
     </div>
 
     <div class="input-group">
         <label>Verhöfischte Kundgabe:</label>
         <div id="outputText" class="output-box">Warten auf Eure Einbegehrung...</div>
+
+        <details id="analysisBox" class="analysis-box">
+            <summary>Semantische Analyse / IR</summary>
+            <pre id="analysisText"></pre>
+        </details>
     </div>
 </div>
+
+<script>
+/* Embedded Semantic Engine v2: no Node.js, no server, no network. */
+window.SemanticEngineV2 = (() => {
+// tokenizer.js
+/**
+ * Lightweight German tokenizer. It deliberately keeps punctuation as tokens
+ * and protects URLs, e-mail addresses, numbers and quoted spans from style
+ * transformations.
+ */
+
+const PROTECTED_RE = /(?:https?:\/\/[^\s]+|www\.[^\s]+|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}|\d+(?:[.,]\d+)?(?:\s?[%€$])?)/giu;
+
+function tokenize(text) {
+  const protectedValues = [];
+  const protectedText = text.replace(PROTECTED_RE, match => {
+    const id = `¤P${protectedValues.length}¤`;
+    protectedValues.push(match);
+    return id;
+  });
+
+  const raw = protectedText.match(/¤P\d+¤|[\p{L}\p{M}\p{N}_]+(?:[-'][\p{L}\p{M}\p{N}_]+)*|…|[.!?,;:!?()\[\]{}"„“‚‘»«—–-]/gu) || [];
+  return raw.map(value => ({
+    value,
+    normalized: value.toLocaleLowerCase('de-DE'),
+    type: /^[.!?,;:!?()\[\]{}"„“‚‘»«—–-]$/.test(value) ? 'punctuation' : 'word',
+    protected: /^¤P\d+¤$/.test(value)
+  })).map(token => {
+    if (token.protected) {
+      const index = Number(token.value.slice(2, -1));
+      token.value = protectedValues[index];
+      token.normalized = token.value.toLocaleLowerCase('de-DE');
+    }
+    return token;
+  });
+}
+
+function splitSentences(tokens) {
+  const sentences = [];
+  let current = [];
+  for (const token of tokens) {
+    current.push(token);
+    if (token.type === 'punctuation' && /[.!?]/.test(token.value)) {
+      sentences.push(current);
+      current = [];
+    }
+  }
+  if (current.length) sentences.push(current);
+  return sentences;
+}
+
+function detokenize(tokens) {
+  let out = '';
+  for (const token of tokens) {
+    const v = token.value;
+    if (!out) { out = v; continue; }
+    if (/^[,.;:!?\)\]\}]/u.test(v)) out += v;
+    else if (/^[\]\}]/u.test(v)) out += v;
+    else if (/^["„“‚‘»«]/u.test(v)) out += v;
+    else if (/^[—–-]/u.test(v)) out += ` ${v}`;
+    else if (out.endsWith('„') || out.endsWith('“') || out.endsWith('‚') || out.endsWith('‘') || out.endsWith('»') || out.endsWith('(') || out.endsWith('[') || out.endsWith('{')) out += v;
+    else out += ` ${v}`;
+  }
+  return out.replace(/\s+([,.;:!?])/g, '$1').replace(/([([{])\s+/g, '$1').trim();
+}
+
+// morphology.js
+const PRONOUNS = {
+  ich: { pos: 'PRON', person: 1, number: 'singular', case: 'nom' },
+  mich: { pos: 'PRON', person: 1, number: 'singular', case: 'acc' },
+  mir: { pos: 'PRON', person: 1, number: 'singular', case: 'dat' },
+  mein: { pos: 'DET', person: 1, number: 'singular', case: 'nom', possessive: true },
+  meine: { pos: 'DET', person: 1, number: 'singular', case: 'nom', possessive: true },
+  meinen: { pos: 'DET', person: 1, number: 'singular', case: 'acc/dat', possessive: true },
+  meinem: { pos: 'DET', person: 1, number: 'singular', case: 'dat', possessive: true },
+  meiner: { pos: 'DET', person: 1, number: 'singular', case: 'gen/dat', possessive: true },
+  meines: { pos: 'DET', person: 1, number: 'singular', case: 'gen', possessive: true },
+  mich: { pos: 'PRON', person: 1, number: 'singular', case: 'acc' },
+  du: { pos: 'PRON', person: 2, number: 'singular', case: 'nom', informal: true },
+  dich: { pos: 'PRON', person: 2, number: 'singular', case: 'acc', informal: true },
+  dir: { pos: 'PRON', person: 2, number: 'singular', case: 'dat', informal: true },
+  dein: { pos: 'DET', person: 2, number: 'singular', case: 'nom/acc', possessive: true, informal: true },
+  deine: { pos: 'DET', person: 2, number: 'singular', case: 'nom/acc', possessive: true, informal: true },
+  deinen: { pos: 'DET', person: 2, number: 'singular', case: 'acc/dat', possessive: true, informal: true },
+  deinem: { pos: 'DET', person: 2, number: 'singular', case: 'dat', possessive: true, informal: true },
+  deiner: { pos: 'DET', person: 2, number: 'singular', case: 'gen/dat', possessive: true, informal: true },
+  deines: { pos: 'DET', person: 2, number: 'singular', case: 'gen', possessive: true, informal: true },
+  ihr: { pos: 'PRON', person: 3, number: 'plural', case: 'nom' },
+  ihm: { pos: 'PRON', person: 3, number: 'singular', case: 'dat' },
+  ihnen: { pos: 'PRON', person: 3, number: 'plural', case: 'dat' },
+  sie: { pos: 'PRON', person: 3, number: 'singular/plural', case: 'nom/acc' },
+  er: { pos: 'PRON', person: 3, number: 'singular', gender: 'masc', case: 'nom' },
+  den: { pos: 'DET', case: 'acc/nom-plural' },
+  dem: { pos: 'DET', case: 'dat' },
+  des: { pos: 'DET', case: 'gen' },
+  der: { pos: 'DET', case: 'nom-fem/gen' }
+};
+
+const PREP_CASE = {
+  mit: 'dat', nach: 'dat', bei: 'dat', seit: 'dat', von: 'dat', zu: 'dat', aus: 'dat', gegenüber: 'dat',
+  durch: 'acc', für: 'acc', gegen: 'acc', ohne: 'acc', um: 'acc', wider: 'acc',
+  trotz: 'gen', während: 'gen', wegen: 'gen', aufgrund: 'gen', statt: 'gen', innerhalb: 'gen', außerhalb: 'gen',
+  an: 'dat/acc', auf: 'dat/acc', hinter: 'dat/acc', in: 'dat/acc', neben: 'dat/acc', über: 'dat/acc', unter: 'dat/acc', vor: 'dat/acc', zwischen: 'dat/acc'
+};
+
+const COMMON_DATIVE_VERBS = new Set(['helfen', 'danken', 'gefallen', 'folgen', 'gehören', 'vertrauen', 'antworten', 'begegnen', 'fehlen', 'geben', 'schenken', 'sagen', 'schreiben', 'bringen', 'zeigen', 'erklären', 'wünschen', 'erweisen']);
+
+function guessPos(token) {
+  const w = token.normalized;
+  if (token.type === 'punctuation') return 'PUNCT';
+  if (PRONOUNS[w]) return PRONOUNS[w].pos;
+  if (PREP_CASE[w]) return 'ADP';
+  if (/^(und|oder|aber|denn|sondern|doch|jedoch|weil|dass|wenn|obwohl|damit|ob|als|während|bevor|nachdem|falls)$/u.test(w)) return 'CONJ';
+  if (/^(ich|du|er|sie|es|wir|ihr|man|mir|mich|dir|dich|ihm|ihnen|uns|euch)$/u.test(w)) return 'PRON';
+  if (/^(nicht|kein|keine|keinen|keinem|keiner|sehr|heute|gestern|morgen|leider|gern|gerne|schon|noch|immer|nie|niemals|bald|schnell|langsam)$/u.test(w)) return 'ADV';
+  if (/^(habe|hast|hat|haben|habt|bin|bist|ist|sind|seid|war|waren|wäre|wären|werde|wirst|wird|werden|kann|kannst|können|könnt|muss|musst|müssen|soll|sollst|sollen|will|willst|wollen|wollt|möchte|möchtest|möchten)$/u.test(w)) return 'AUX';
+  if (/^[A-ZÄÖÜ][\p{L}\p{M}-]*$/u.test(token.value)) return 'NOUN';
+  if (/(en|ern|eln|st|t|te|test|ten|tet)$/u.test(w)) return 'X';
+  return 'X';
+}
+
+function analyzeToken(token) {
+  const morph = PRONOUNS[token.normalized] || {};
+  return { ...token, pos: morph.pos || guessPos(token), ...morph };
+}
+
+function inferCase(tokens, index) {
+  const token = tokens[index];
+  if (!token) return null;
+  if (token.case && !token.case.includes('/')) return token.case;
+  const prev = tokens[index - 1]?.normalized;
+  if (prev && PREP_CASE[prev]) {
+    if (PREP_CASE[prev] !== 'dat/acc') return PREP_CASE[prev];
+    const next = tokens[index + 1]?.normalized;
+    // Heuristic for Wechselpräpositionen: motion/location verbs.
+    const beforeWindow = tokens.slice(Math.max(0, index - 4), index).map(t => t.normalized);
+    if (beforeWindow.some(w => ['gehen','stellen','legen','setzen','fahren','laufen','bewegen','bringen'].includes(w))) return 'acc';
+    if (next && ['dem','der','den','einem','einer','einem'].includes(next)) return 'dat';
+  }
+  const window = tokens.slice(Math.max(0, index - 5), index).map(t => t.normalized);
+  if (window.some(w => COMMON_DATIVE_VERBS.has(w))) return 'dat';
+  if (token.normalized === 'dich') return 'acc';
+  if (token.normalized === 'dir') return 'dat';
+  return token.case?.split('/')[0] || null;
+}
+
+// syntax.js
+function analyzeSentence(tokens) {
+  const analyzed = tokens.map(analyzeToken);
+  analyzed.forEach((token, i) => { token.inferredCase = inferCase(analyzed, i); });
+
+  const finiteVerb = analyzed.findIndex(t => t.pos === 'AUX' || /^(sage|sagst|sagt|geht|gehen|hast|habe|hat|machen|machst|macht|kommt|kommst|komme)$/iu.test(t.normalized));
+  const subject = analyzed.findIndex(t => t.pos === 'PRON' && ['nom', 'nom/acc'].includes(t.case));
+
+  return {
+    tokens: analyzed,
+    finiteVerbIndex: finiteVerb,
+    subjectIndex: subject,
+    clauseType: detectClauseType(analyzed),
+    speechAct: detectSpeechAct(analyzed),
+    modality: detectModality(analyzed),
+    negated: analyzed.some(t => ['nicht','kein','keine','keinen','keinem','keiner'].includes(t.normalized))
+  };
+}
+
+function detectClauseType(tokens) {
+  const values = tokens.map(t => t.normalized);
+  if (values.includes('?')) return 'question';
+  if (/^(bitte|sag|sagt|geben|gib|nimm|komm|kommen|lass|lassen|hör|hoer|schau|schauen)$/u.test(values[0] || '')) return 'imperative';
+  if (values.includes('!')) return 'exclamation';
+  return 'statement';
+}
+
+function detectSpeechAct(tokens) {
+  const text = tokens.map(t => t.normalized).join(' ');
+  if (/\b(danke|vielen dank|ich danke)\b/u.test(text)) return 'gratitude';
+  if (/\b(hallo|hi|guten tag|moin|grüß|gruss)\b/u.test(text)) return 'greeting';
+  if (/\b(tschüss|tschues|ciao|auf wiedersehen|bis bald)\b/u.test(text)) return 'farewell';
+  if (tokens.some(t => t.normalized === 'bitte')) return 'request';
+  if (tokens.some(t => ['frage','fragen','wie','warum','weshalb','wieso','wann','wo','wer','was'].includes(t.normalized))) return 'question';
+  return 'statement';
+}
+
+function detectModality(tokens) {
+  const values = tokens.map(t => t.normalized);
+  if (values.some(v => ['müssen','musst','muss'].includes(v))) return 'obligation';
+  if (values.some(v => ['können','kannst','kann','könnt'].includes(v))) return 'ability';
+  if (values.some(v => ['wollen','willst','will','wollt'].includes(v))) return 'volition';
+  if (values.some(v => ['sollen','sollst','soll'].includes(v))) return 'recommendation';
+  if (values.some(v => ['möchte','möchtest','möchten'].includes(v))) return 'polite_desire';
+  return null;
+}
+
+// lexicon.js
+const STYLES = {
+  barock: {
+    name: 'Höfisches Barock',
+    prefix: 'Seid gegrüßt, edler Herr / werte Dame!\n\nEs gereicht Uns zur außerordentlichen Ergötzlichkeit, Euch kundzutun:\n',
+    suffix: '\n\nIn tiefster Ergebenheit verbleibend,',
+    phrases: [
+      [/^hallo$/iu, 'Seyed gegrüßet'],
+      [/^hi$/iu, 'Seyed gegrüßet'],
+      [/^guten tag$/iu, 'Seyed gegrüßet'],
+      [/^wie geht es dir\??$/iu, 'wie stehet es um Euer wohlgeschätztes Befinden?'],
+      [/^wie gehts dir\??$/iu, 'wie stehet es um Euer wohlgeschätztes Befinden?'],
+      [/^ich habe eine frage\.?$/iu, 'ein dringlich Begehren drängt an Unser Ohr'],
+      [/^danke\.?$/iu, 'Wir erweisen Euch Unseren verbindlichsten Dank'],
+      [/^ja\.?$/iu, 'Wohlan, so sei es'],
+      [/^nein\.?$/iu, 'Behüte uns Gott vor solchem Tuen'],
+      [/^tschüss\.?$/iu, 'Gott befehle Euch in seine gnädige Obhut'],
+      [/^ciao\.?$/iu, 'Gott befehle Euch in seine gnädige Obhut'],
+      [/^auf wiedersehen\.?$/iu, 'Gott befehle Euch in seine gnädige Obhut']
+    ],
+    words: new Map([
+      ['geld', 'Güter und Dukaten'], ['arbeiten', 'dem schaffenden Tagewerk nachgehen'], ['arbeite', 'dem schaffenden Tagewerk nachgehen'],
+      ['heute', 'am heutigen Tage'], ['schnell', 'ohne Verzug und mit größter Eile'], ['problem', 'Mißhelligkeit']
+    ])
+  },
+  kanzlei: {
+    name: 'Kaiserlicher Kanzleistil',
+    prefix: 'Kund und zu wissen sei hiermit jedermann:\n\nIn Sachen der nachfolgenden Angelegenheit wird ordnungsgemäß vermerkt:\n',
+    suffix: '\n\nSignatum und siegelbewährt unter kaiserlicher Verordnung.',
+    phrases: [
+      [/^hallo$/iu, 'Zu wissen sei'], [/^guten tag$/iu, 'Zu wissen sei'],
+      [/^ich habe eine frage\.?$/iu, 'hiermit wird eine Anfrage vorgetragen'],
+      [/^danke\.?$/iu, 'in getreuer Anerkenntnis'],
+      [/^nein\.?$/iu, 'dies wird hiermit verneint']
+    ],
+    words: new Map([
+      ['frage', 'Anfrage'], ['geld', 'Münzbestand'], ['schnell', 'unverzüglich'], ['problem', 'unvorhergesehene Hemmnis']
+    ])
+  },
+  poetisch: {
+    name: 'Romantisch-Poetisch',
+    prefix: 'Wie ein Hauch von Gold verströmt diese Kunde:\n\n',
+    suffix: '\n\nSo verweht der Ruf durch den Garten der Zeit.',
+    phrases: [
+      [/^hallo$/iu, 'Sei uns willkommen wie der Lenz'],
+      [/^danke\.?$/iu, 'Mein Herz neigt sich in Dankbarkeit']
+    ],
+    words: new Map([
+      ['nacht', 'samtene Schattenstunde'], ['sonne', 'das goldene Tagesgestirn']
+    ])
+  }
+};
+
+// semantic-ir.js
+function buildIR(input) {
+  const tokens = tokenize(input);
+  const sentenceTokens = splitSentences(tokens);
+  return {
+    type: 'document',
+    source: input,
+    sentences: sentenceTokens.map((sentence, index) => {
+      const analysis = analyzeSentence(sentence);
+      return {
+        id: index,
+        text: sentence.map(t => t.value).join(' '),
+        ...analysis,
+        semantics: extractSemantics(analysis)
+      };
+    })
+  };
+}
+
+function extractSemantics(sentence) {
+  const values = sentence.tokens.map(t => t.normalized);
+  const hasAddressee = sentence.tokens.some(t => t.informal && t.person === 2);
+  const hasPossessive = sentence.tokens.some(t => t.pos === 'DET' && t.possessive && t.person === 2);
+  return {
+    addressee: hasAddressee ? 'second_person_singular_informal' : null,
+    possessiveAddress: hasPossessive,
+    greeting: sentence.speechAct === 'greeting',
+    gratitude: sentence.speechAct === 'gratitude',
+    farewell: sentence.speechAct === 'farewell',
+    request: sentence.speechAct === 'request',
+    question: sentence.speechAct === 'question',
+    keyTerms: values.filter(v => v.length > 3 && !['eine','einer','einem','einen','dass','aber','oder','auch','nicht'].includes(v)).slice(0, 20)
+  };
+}
+
+// realizer.js
+const ADDRESS = {
+  barock: {
+    nom: 'Ihr', acc: 'Euch', dat: 'Euch', gen: 'Euer',
+    possessive: { mascNom: 'Euer', neutNom: 'Euer', femNom: 'Eure', pluralNom: 'Eure', mascAcc: 'Euren', neutAcc: 'Euer', femAcc: 'Eure', pluralAcc: 'Eure', mascDat: 'Eurem', neutDat: 'Eurem', femDat: 'Eurer', pluralDat: 'Euren', gen: 'Eures' }
+  },
+  kanzlei: {
+    nom: 'Sie', acc: 'Sie', dat: 'Ihnen', gen: 'Ihrer',
+    possessive: { mascNom: 'Ihr', neutNom: 'Ihr', femNom: 'Ihre', pluralNom: 'Ihre', mascAcc: 'Ihren', neutAcc: 'Ihr', femAcc: 'Ihre', pluralAcc: 'Ihre', mascDat: 'Ihrem', neutDat: 'Ihrem', femDat: 'Ihrer', pluralDat: 'Ihren', gen: 'Ihres' }
+  },
+  poetisch: {
+    nom: 'Ihr', acc: 'Euch', dat: 'Euch', gen: 'Euer',
+    possessive: { mascNom: 'Euer', neutNom: 'Euer', femNom: 'Eure', pluralNom: 'Eure', mascAcc: 'Euren', neutAcc: 'Euer', femAcc: 'Eure', pluralAcc: 'Eure', mascDat: 'Eurem', neutDat: 'Eurem', femDat: 'Eurer', pluralDat: 'Euren', gen: 'Eures' }
+  }
+};
+
+const ARTICLE_HINTS = {
+  der: 'masc', den: 'masc', dem: 'masc', des: 'masc',
+  die: 'fem', einer: 'fem', eine: 'fem', einer: 'fem',
+  das: 'neut', einem: 'neut', eines: 'neut',
+  denPlural: 'plural'
+};
+
+function transformSentence(sentence, style) {
+  const values = sentence.tokens.map(t => t.value);
+  const raw = detokenize(sentence.tokens);
+
+  for (const [pattern, replacement] of STYLES[style].phrases) {
+    if (pattern.test(raw)) return replacement;
+  }
+
+  const out = sentence.tokens.map((token, index) => {
+    const lower = token.normalized;
+    if (token.protected || token.type === 'punctuation') return { ...token };
+
+    // Second-person address: inflect by the syntactically inferred case.
+    if (lower === 'du' || lower === 'dich' || lower === 'dir') {
+      const c = lower === 'du' ? 'nom' : lower === 'dich' ? 'acc' : 'dat';
+      return { ...token, value: ADDRESS[style][c] };
+    }
+
+    if (token.possessive && token.person === 2) {
+      return { ...token, value: inflectPossessive(token, sentence.tokens, index, style) };
+    }
+
+    const replacement = STYLES[style].words.get(lower);
+    if (replacement) return { ...token, value: replacement };
+    return { ...token };
+  });
+
+  // Preserve the existing project's broad formalization behaviour for a few
+  // constructions not covered by morphology, but only as a final fallback.
+  return detokenize(out)
+    .replace(/\bEueres\b/gu, 'Eures')
+    .replace(/\s+([,.!?;:])/gu, '$1');
+}
+
+const COMMON_FEMININE = new Set(['idee','frage','zeit','sonne','nacht','arbeit','liebe','sache','kundgabe','angelegenheit','erkenntnis','bitte','hilfe','freude','zeit']);
+const COMMON_NEUTER = new Set(['kind','haus','buch','geld','begehren','befinden','tagewerk','problem']);
+
+function inferNounFeatures(tokens, index) {
+  const next = tokens[index + 1];
+  const prev = tokens[index - 1];
+  const article = prev?.normalized;
+  let gender = ARTICLE_HINTS[article] || null;
+  let number = 'singular';
+
+  // Possessive determiners are themselves immediately followed by the noun,
+  // so the noun supplies the gender when no article is present.
+  if (!gender && next) {
+    if (COMMON_FEMININE.has(next.normalized)) gender = 'fem';
+    else if (COMMON_NEUTER.has(next.normalized)) gender = 'neut';
+    else if (/(?:ung|heit|keit|schaft|tion|tät|ik|ion|e)$/iu.test(next.normalized)) gender = 'fem';
+    else if (/(?:chen|lein|ment|um)$/iu.test(next.normalized)) gender = 'neut';
+  }
+
+  if (article === 'die' || article === 'den') number = 'plural';
+  if (!gender) gender = 'masc';
+  return { gender: gender === 'plural' ? 'masc' : gender, number };
+}
+
+function inflectPossessive(token, tokens, index, style) {
+  const features = inferNounFeatures(tokens, index);
+  const lower = token.normalized;
+  const c = token.inferredCase || (lower.includes('em') ? 'dat' : lower.includes('er') ? 'dat' : lower.includes('es') ? 'gen' : lower.includes('en') ? 'acc' : 'nom');
+  const p = ADDRESS[style].possessive;
+  const key = `${features.gender}${c.charAt(0).toUpperCase()}${c.slice(1)}`;
+  if (features.number === 'plural') {
+    if (c === 'dat') return p.pluralDat;
+    if (c === 'acc') return p.pluralAcc;
+    return p.pluralNom;
+  }
+  if (key === 'mascNom') return p.mascNom;
+  if (key === 'neutNom') return p.neutNom;
+  if (key === 'femNom') return p.femNom;
+  if (key === 'mascAcc') return p.mascAcc;
+  if (key === 'neutAcc') return p.neutAcc;
+  if (key === 'femAcc') return p.femAcc;
+  if (key === 'mascDat') return p.mascDat;
+  if (key === 'neutDat') return p.neutDat;
+  if (key === 'femDat') return p.femDat;
+  return p.gen;
+}
+
+function realize(ir, style) {
+  if (!STYLES[style]) throw new Error(`Invalid style: ${style}`);
+  const body = ir.sentences.map(sentence => transformSentence(sentence, style)).join(' ').trim();
+  return STYLES[style].prefix + body + STYLES[style].suffix;
+}
+
+// transmuter.js
+function transmuteText(input, style = 'barock', options = {}) {
+  if (!STYLES[style]) {
+    return { success: false, error: `Invalid style. Available styles: ${Object.keys(STYLES).join(', ')}` };
+  }
+  if (typeof input !== 'string' || !input.trim()) {
+    return { success: false, error: 'Input text cannot be empty' };
+  }
+
+  const ir = buildIR(input);
+  const transmuted = realize(ir, style);
+  const result = { success: true, original: input, transmuted, style };
+  if (options.analysis) result.analysis = ir;
+  return result;
+}
+
+function analyzeText(input) {
+  if (typeof input !== 'string' || !input.trim()) throw new Error('Input text cannot be empty');
+  return buildIR(input);
+}
+
+function styles() {
+  return Object.entries(STYLES).map(([id, config]) => ({ id, name: config.name, prefix: config.prefix.slice(0, 100) + '...' }));
+}
+  return { transmuteText, analyzeText, styles };
+})();
+</script>
 
 <script>
 const dictionary = {
@@ -189,33 +760,130 @@ const dictionary = {
     }
 };
 
-function transmuteText() {
-    const input = document.getElementById('inputText').value;
-    const style = document.getElementById('styleSelect').value;
-    const outputBox = document.getElementById('outputText');
+function getSelectedEngine() {
+    return document.querySelector('input[name="engine"]:checked')?.value || "legacy";
+}
 
-    if (!input.trim()) {
-        outputBox.innerText = "So sprecht doch, damit Wir Euch vernehmen können!";
+function setApiStatus(message, type = "") {
+    const status = document.querySelector("#apiConfig .api-status");
+    if (!status) return;
+    status.textContent = message;
+    status.className = "api-status" + (type ? " " + type : "");
+}
+
+function showAnalysis(data) {
+    const box = document.getElementById("analysisBox");
+    const text = document.getElementById("analysisText");
+
+    if (!document.getElementById("showAnalysis").checked || !data) {
+        box.classList.remove("visible");
+        text.textContent = "";
         return;
     }
 
-    let config = dictionary[style];
+    text.textContent = JSON.stringify(data, null, 2);
+    box.classList.add("visible");
+}
+
+function transmuteLegacy(input, style) {
+    if (!input.trim()) {
+        return "So sprecht doch, damit Wir Euch vernehmen können!";
+    }
+
+    const config = dictionary[style];
     let result = input;
 
-    // Ersetzungen durchführen
     config.replacements.forEach(([pattern, replacement]) => {
         result = result.replace(pattern, replacement);
     });
 
-    // Ihr/Euch Anrede anpassen (einfache Heuristik)
+    // Bestehende Heuristik bewusst erhalten:
+    // Die klassische Engine bleibt unverändert als Fallback.
     result = result.replace(/\bdu\b/gi, "Ihr");
     result = result.replace(/\bdir\b/gi, "Euch");
     result = result.replace(/\bdein\b/gi, "Euer");
     result = result.replace(/\bdeine\b/gi, "Eure");
     result = result.replace(/\bdeinen\b/gi, "Euren");
 
-    outputBox.innerText = config.prefix + result + config.suffix;
+    return config.prefix + result + config.suffix;
 }
+
+async function transmuteSemantic(input, style, mode) {
+    if (!window.SemanticEngineV2) throw new Error("Die eingebettete Semantic Engine v2 wurde nicht geladen.");
+    if (mode === "analysis") {
+        const analysis = window.SemanticEngineV2.analyzeText(input);
+        return { output: input, analysis, raw: analysis };
+    }
+    const data = window.SemanticEngineV2.transmuteText(input, style, { analysis: true });
+    if (!data || data.success === false) throw new Error(data?.error || "Semantic Engine lieferte kein gültiges Ergebnis.");
+    return { output: data.transmuted || "", analysis: data.analysis || null, raw: data };
+}
+
+async function updateEngineVisibility() {
+    const semantic = getSelectedEngine() === "semantic";
+    document.getElementById("apiConfig").classList.toggle("visible", semantic);
+    if (semantic) setApiStatus("Semantic Engine v2 eingebettet: vollständig offline verfügbar.", "ok");
+}
+
+async function transmuteText() {
+    const input = document.getElementById("inputText").value;
+    const style = document.getElementById("styleSelect").value;
+    const semanticMode = document.getElementById("semanticMode").value;
+    const outputBox = document.getElementById("outputText");
+    const engine = getSelectedEngine();
+
+    showAnalysis(null);
+
+    if (!input.trim()) {
+        outputBox.innerText = "So sprecht doch, damit Wir Euch vernehmen können!";
+        return;
+    }
+
+    if (engine === "legacy") {
+        outputBox.innerText = transmuteLegacy(input, style);
+        return;
+    }
+
+    outputBox.innerText = "Die semantische Hofkanzlei verarbeitet Eure Kundgabe …";
+    setApiStatus("Verwende Semantic Engine v2 …");
+
+    try {
+        const result = await transmuteSemantic(input, style, semanticMode);
+
+        outputBox.innerText = result.output;
+
+        if (result.analysis) {
+            showAnalysis(result.analysis);
+        }
+
+        setApiStatus("Semantic Engine v2 erfolgreich verwendet.", "ok");
+    } catch (error) {
+        /*
+         * Wichtig: Kein stiller Wechsel zur alten Engine.
+         * Bei explizit gewählter Semantic Engine soll der Benutzer wissen,
+         * dass die neue Engine nicht verfügbar war.
+         */
+        outputBox.innerText =
+            "Die semantische Engine konnte nicht ausgeführt werden.\n\n" +
+            error.message +
+            "\n\nDie klassische Engine steht weiterhin zur Verfügung; " +
+            "wählet hierzu oben „Klassisch / offline“.";
+        setApiStatus(error.message, "error");
+    }
+}
+
+document.querySelectorAll('input[name="engine"]').forEach(input => {
+    input.addEventListener("change", updateEngineVisibility);
+});
+
+document.getElementById("showAnalysis").addEventListener("change", () => {
+    const semantic = getSelectedEngine() === "semantic";
+    if (!semantic) {
+        showAnalysis(null);
+    }
+});
+
+updateEngineVisibility();
 </script>
 
 </body>
