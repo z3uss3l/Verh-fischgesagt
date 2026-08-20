@@ -1,0 +1,21 @@
+{
+  "format": "VFT",
+  "version": 1,
+  "sourceLanguage": "de-DE",
+  "targetLanguage": "de-HOF-BAROCK",
+  "translationMemory": [
+    {
+      "sourceLang": "de-DE",
+      "targetLang": "de-HOF-BAROCK",
+      "source": "Kannst du mir helfen?",
+      "target": "Wäret Ihr wohl so gütig, Uns behilflich zu sein?"
+    }
+  ],
+  "terminology": [
+    {
+      "source": "Problem",
+      "target": "Mißhelligkeit",
+      "domain": "Verh-fischgesagt"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tmx version="1.4">
+  <header creationtool="Verh-fischgesagt" segtype="sentence" adminlang="de" srclang="de-DE" datatype="plaintext"/>
+  <body>
+    <tu>
+      <tuv xml:lang="de-DE"><seg>Kannst du mir helfen?</seg></tuv>
+      <tuv xml:lang="de-HOF-BAROCK"><seg>Wäret Ihr wohl so gütig, Uns behilflich zu sein?</seg></tuv>
+    </tu>
+  </body>
+</tmx>

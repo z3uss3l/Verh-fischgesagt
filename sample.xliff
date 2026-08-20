@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="de-DE" target-language="de-HOF-BAROCK" datatype="plaintext">
+    <body>
+      <trans-unit id="1">
+        <source>Kannst du mir helfen?</source>
+        <target>Wäret Ihr wohl so gütig, Uns behilflich zu sein?</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
